@@ -17,9 +17,9 @@ dependencies {
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
-    compile group: 'io.vavr', name: 'vavr', version: '0.10.2'
+    compile group: 'io.vavr', name: 'vavr', version: '0.10.2', 'com.h2database:h2:1.4.200', 'junit:junit:4.12'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.200', 'junit:junit:4.12'
 }
 
 test {

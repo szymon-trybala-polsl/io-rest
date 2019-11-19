@@ -3,15 +3,16 @@ package pl.example.spring.punkty;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequestMapping("/points")
 public class PointsController {
 
-    private StudentService service = new StudentService();
+    private final StudentService service;
+    public PointsController(StudentService service) {
+        this.service = service;
+    }
 
     @GetMapping("/students")
     private List<Student> getUsers() {
