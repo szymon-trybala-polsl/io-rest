@@ -5,12 +5,8 @@ import org.springframework.stereotype.Service;
 import pl.example.spring.punkty.db.StudentRepository;
 import pl.example.spring.punkty.db.StudentRow;
 
-import java.util.function.Function;
-
 @Service
 public class StudentService {
-    public List<Student> students = List.empty();
-
     private final StudentRepository repository;
 
     public StudentService(StudentRepository repository) {
@@ -19,23 +15,15 @@ public class StudentService {
 
 
     Student addStudent(final NewStudent student) {
-        StudentRow created = this.repository.save(new StudentRow(
+       return this.repository.save(new StudentRow(
                 student.name,
                 student.number,
                 student.grupa
-        ));
-
-        return getStudentRowStudentFunction().apply(created);
+        )).toStudent();
     }
 
     List<Student> getStudents() {
         return List.ofAll(this.repository.findAll()).
-                map(getStudentRowStudentFunction());
+                map(StudentRow::toStudent);
     }
-
-    private Function<StudentRow, Student> getStudentRowStudentFunction() {
-        return dbObj ->
-                new Student(dbObj.getId(), dbObj.getName(), dbObj.getNumber(), dbObj.getGrupa());
-    }
-
 }
