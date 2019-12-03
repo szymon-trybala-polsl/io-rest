@@ -24,4 +24,8 @@ public class PointsController {
         return this.service.addStudent(student);
     }
 
+    @RequestMapping(value = "/students/{id}/number/{number}")
+    private Student setNumber(@PathVariable("id") long id, @PathVariable("number") String number) {
+        return this.service.changeNumber(id, number).orElseThrow(() -> new IllegalArgumentException("Student with id: " + id + " does not exist"));
+    }
 }
