@@ -14,18 +14,24 @@ public class PointsController {
         this.service = service;
     }
 
-    @GetMapping("/students")
+    @RequestMapping(value = "/students", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     private List<Student> getUsers() {
         return this.service.getStudents().asJava();
     }
 
-    @PostMapping(value = "/students", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/students", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     private Student addUser(@RequestBody NewStudent student) {
         return this.service.addStudent(student);
     }
 
-    @RequestMapping(value = "/students/{id}/number/{number}")
+    @RequestMapping(value = "/students/{id}/number/{number}", method = RequestMethod.POST)
     private Student setNumber(@PathVariable("id") long id, @PathVariable("number") String number) {
-        return this.service.changeNumber(id, number).orElseThrow(() -> new IllegalArgumentException("Student with id: " + id + " does not exist"));
+        return this.service.changeNumber(id, number).orElseThrow(() -> new NoStudentException(id));
+    }
+
+    @RequestMapping(value = "/students/{id}/scores", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public int addScore(@PathVariable("id") long id, @RequestBody Score score) {
+        return this.service.addScore(id, score)
+                .orElseThrow(() ->new NoStudentException(id));
     }
 }

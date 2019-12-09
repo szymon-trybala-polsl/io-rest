@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.example.spring.punkty.db.ScoreRepository;
 import pl.example.spring.punkty.db.StudentRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,24 +18,26 @@ public class StudentServiceTest {
 
     @Autowired
     private StudentRepository repository;
+    @Autowired
+    private ScoreRepository scoreRepository;
 
     @Test
     public void getEmptyList() {
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         List<Student> students = service.getStudents();
         assertTrue(students.isEmpty());
     }
 
     @Test
     public void addStudent() {
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         final Student created = service.addStudent(new NewStudent("Student 1", "1-2-3", "IP"));
         assertNotNull(created);
     }
 
     @Test
     public void addStudentIsReturned() {
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         final Student created = service.addStudent(new NewStudent("Student 1", "1-2-3", "IP"));
         final List<Student> studentsAll = service.getStudents();
 
@@ -43,7 +46,7 @@ public class StudentServiceTest {
 
     @Test
     public void addStudentHasNewId() {
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(repository, scoreRepository);
         final Student st1 = service.addStudent(new NewStudent("Student 1", "1-2-3", "IP"));
         final Student st2 = service.addStudent(new NewStudent("Student 2", "2-1-3", "IP"));
         final List<Student> studentsAll = service.getStudents();
